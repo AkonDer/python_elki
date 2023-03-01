@@ -4,15 +4,15 @@ import calculation
 app = Flask(__name__)
 
 
-@app.route("/")
+@app.route("/404")
 def index():
-    return render_template("index.html")
+    return render_template("404.html")
 
 
-@app.route("/elki/")
-def elki():
+@app.route("/")
+def page_elki():
     bar = calculation.run()
-    return render_template("elki.html", bar=bar)
+    return render_template("index.html", bar=bar)
 
 
 if __name__ == "__main__":

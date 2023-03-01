@@ -40,6 +40,6 @@ def run():
     time_open = datetime.datetime(1,1,1,0, delta_close_bar // 60, delta_close_bar % 60)
 
     if delta_close_bar > delta_open_bar:
-        return f"Закрыто еще {time_close.minute}:{time_close.second}"
+        return f"Закрыто еще { time_close.strftime('%H:%M:%S') }"
     elif delta_close_bar < delta_open_bar:
-        return f"Открыто еще {time_open.minute}:{time_open.second}"
+        return f"Открыто еще { time_open.strftime('%H:%M:%S')}"
