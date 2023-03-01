@@ -3,6 +3,7 @@ import datetime
 
 def find_near_time(list_time):
     time_now = datetime.datetime.now()
+
     time_now_second = time_now.hour * 3600 + time_now.minute * 60 + time_now.second
     for time in list_time:
         time_second = time.hour * 3600 + time.minute * 60
@@ -36,10 +37,7 @@ def run():
     delta_close_bar = convert_to_second(find_near_time(list_times_close_bar)) - convert_to_second(time_now)
     delta_open_bar = convert_to_second(find_near_time(list_times_open_bar)) - convert_to_second(time_now)
 
-    time_close = datetime.datetime(1,1,1,0, delta_open_bar // 60, delta_open_bar % 60)
-    time_open = datetime.datetime(1,1,1,0, delta_close_bar // 60, delta_close_bar % 60)
-
     if delta_close_bar > delta_open_bar:
-        return f"Закрыто еще { time_close.strftime('%H:%M:%S') }"
+        return f"Закрыто еще {str(datetime.timedelta(seconds=delta_open_bar))}"
     elif delta_close_bar < delta_open_bar:
-        return f"Открыто еще { time_open.strftime('%H:%M:%S')}"
+        return f"Открыто еще {str(datetime.timedelta(seconds=delta_close_bar))}"
