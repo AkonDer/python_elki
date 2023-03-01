@@ -1,6 +1,7 @@
 import datetime
 
 time_now = datetime.datetime.now()
+#time_now = datetime.datetime(time_now.year, time_now.month, time_now.day, 15, 19, 1)
 
 list_times_open_bar = []
 list_times_close_bar = []
@@ -18,8 +19,7 @@ with open("static/resources/close_bar.txt", "r") as f:
 
 
 def find_near_time(list_time):
-    time_nw = datetime.datetime.now()
-    time_now_second = time_nw.hour * 3600 + time_nw.minute * 60
+    time_now_second = time_now.hour * 3600 + time_now.minute * 60 + time_now.second
     for time in list_time:
         time_second = time.hour * 3600 + time.minute * 60
         if time_second - time_now_second >= 0:
@@ -27,11 +27,15 @@ def find_near_time(list_time):
     return list_time[0]
 
 
-delta_close_bar = find_near_time(list_times_close_bar) - time_now
-delta_open_bar = find_near_time(list_times_open_bar) - time_now
+def convert_to_second(time):
+    return time.hour * 3600 + time.minute * 60 + time.second
+    pass
+
+
+delta_close_bar = convert_to_second(find_near_time(list_times_close_bar)) - convert_to_second(time_now)
+delta_open_bar = convert_to_second(find_near_time(list_times_open_bar)) - convert_to_second(time_now)
 
 if delta_close_bar > delta_open_bar:
-    print(f"Закрыто еще {delta_open_bar.seconds // 60}:{delta_open_bar.seconds % 60}")
+    print(f"Закрыто еще {delta_open_bar // 60}:{delta_open_bar % 60}")
 elif delta_close_bar < delta_open_bar:
-    print(f"Открыто еще {delta_close_bar.seconds // 60}:{delta_close_bar.seconds % 60}")
-
+    print(f"Открыто еще {delta_close_bar // 60}:{delta_close_bar % 60}")
