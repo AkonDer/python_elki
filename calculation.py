@@ -36,7 +36,10 @@ def run():
     delta_close_bar = convert_to_second(find_near_time(list_times_close_bar)) - convert_to_second(time_now)
     delta_open_bar = convert_to_second(find_near_time(list_times_open_bar)) - convert_to_second(time_now)
 
+    time_close = datetime.datetime(1,1,1,0, delta_open_bar // 60, delta_open_bar % 60)
+    time_open = datetime.datetime(1,1,1,0, delta_close_bar // 60, delta_close_bar % 60)
+
     if delta_close_bar > delta_open_bar:
-        return f"Закрыто еще {delta_open_bar // 60}:{delta_open_bar % 60}"
+        return f"Закрыто еще {time_close.minute}:{time_close.second}"
     elif delta_close_bar < delta_open_bar:
-        return f"Открыто еще {delta_close_bar // 60}:{delta_close_bar % 60}"
+        return f"Открыто еще {time_open.minute}:{time_open.second}"
