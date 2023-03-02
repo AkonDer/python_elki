@@ -11,8 +11,8 @@ def index():
 
 @app.route("/")
 def page_elki():
-    bar = calculation.run()
-    return render_template("index.html", bar=bar)
+    bar, img = calculation.run()
+    return render_template("index.html", bar=bar, img=img)
 
 
 if __name__ == "__main__":
