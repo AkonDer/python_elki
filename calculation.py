@@ -11,6 +11,19 @@ list_times_close_bar_source = ["0:00", "0:37", "1:43", "4:28", "5:04", "5:29", "
                                "18:10", "18:27", "18:45", "19:00", "19:21", "19:45", "19:58", "20:12", "20:34", "20:55",
                                "21:13", "21:32", "21:56", "22:31", "22:48", "23:07"]
 
+list_times_open_bar_source_weekend = ["4:36", "5:10", "5:35", "6:11", "6:26", "6:47", "7:08", "7:30", "7:51", "8:12",
+                                      "8:34", "8:51", "9:10", "9:32", "10:13", "10:35", "10:52", "11:05", "11:37",
+                                      "12:13", "12:43", "13:19", "13:39", "13:59", "14:34", "14:44", "15:19", "15:33",
+                                      "16:12", "16:47", "16:59", "17:22", "17:58", "18:17", "18:33", "18:51", "19:12",
+                                      "19:34", "19:51", "20:11", "20:23", "20:45", "21:01", "21:19", "21:43", "22:02",
+                                      "22:38", "22:54", "23:13", "0:06", "0:43", "1:49"]
+list_times_close_bar_source_weekend = ["4:30", "5:04", "5:29", "6:05", "6:20", "6:36", "6:57", "7:19", "7:40", "8:01",
+                                       "8:23", "8:45", "9:04", "9:22", "10:02", "10:24", "10:46", "10:59", "11:31",
+                                       "12:07", "12:37", "13:13", "13:33", "13:53", "14:28", "14:38", "15:13", "15:27",
+                                       "16:01", "16:41", "16:53", "17:11", "17:52", "18:11", "18:27", "18:45", "19:01",
+                                       "19:28", "19:45", "20:05", "20:17", "20:34", "20:55", "21:13", "21:32", "21:56",
+                                       "22:32", "22:48", "23:07", "0:00", "0:37", "1:43"]
+
 
 def is_weekend():
     # Получаем текущий день недели как число (0 для понедельника, 1 для вторника и т.д.)
@@ -37,13 +50,16 @@ def convert_to_second(time):
 def run():
     time_now = datetime.datetime.now()
 
+    list_times_open_bar_work = list_times_open_bar_source_weekend if is_weekend() else list_times_open_bar_source
+    list_times_close_bar_work = list_times_close_bar_source_weekend if is_weekend() else list_times_close_bar_source
+
     list_times_open_bar = [datetime.datetime(year=time_now.year, month=time_now.month, day=time_now.day,
                                              hour=int(item.split(':')[0]), minute=int(item.split(':')[1]))
-                           for item in list_times_open_bar_source]
+                           for item in list_times_open_bar_work]
 
     list_times_close_bar = [datetime.datetime(year=time_now.year, month=time_now.month, day=time_now.day,
                                               hour=int(item.split(':')[0]), minute=int(item.split(':')[1]))
-                            for item in list_times_close_bar_source]
+                            for item in list_times_close_bar_work]
 
     delta_close_bar = convert_to_second(find_near_time(list_times_close_bar)) - convert_to_second(time_now)
     delta_open_bar = convert_to_second(find_near_time(list_times_open_bar)) - convert_to_second(time_now)
