@@ -1,33 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <title>Фрязино ж/д переезд</title>
     <style>
-        .aligncenter {
+        body {
+            font-family: 'Times New Roman', Times, serif;
             text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
         }
 
         .font {
-            font-family: 'Times New Roman', Times, serif;;
             font-size: 84pt;
+            margin: 50px;
         }
-        .container{
-            width: 500px;
-            margin: 0 auto;
+
+        .image {
+            margin-top: 0;
         }
     </style>
 </head>
 <body>
 
-    <p class="font" align="center">{{ bar }}</p>
-    <p class="aligncenter">
-        <img src="{{ img }}" align="center">
+    <p class="font">{{ bar }}</p>
+    <p>
+        <img class="image" src="{{ img }}" alt="Описание изображения">
     </p>
 
-    <br>
-    <br>
-    <p class="container">
+    <p>
         Данная программа работает в режиме бета-тестирования. Информация может быть не точной и содержать ошибки.
         Время открытия и закрытия шлагбаума выбрано с запасом. Сообщения о багах
         присылайте на почту: ivan.koshkin.fr@gmail.com

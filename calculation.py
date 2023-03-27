@@ -24,12 +24,21 @@ list_times_close_bar_source_weekend = ["4:30", "5:04", "5:29", "6:05", "6:20", "
                                        "19:28", "19:45", "20:05", "20:17", "20:34", "20:55", "21:13", "21:32", "21:56",
                                        "22:32", "22:48", "23:07", "0:00", "0:37", "1:43"]
 
+# Список праздничных дней
+list_holidays = ["01:05", "08:05", "09:05", "12:06", "06:11"]
 
+
+# Функция, проверяющая, является ли сегодняшний день выходным или праздником
 def is_weekend():
+    # Получаем текущую дату в формате дд:мм
+    today = datetime.datetime.now().strftime("%d:%m")
+    # Проверяем, является ли сегодняшняя дата праздником
+    is_holiday = today in list_holidays
+
     # Получаем текущий день недели как число (0 для понедельника, 1 для вторника и т.д.)
     today = datetime.datetime.today().weekday()
-    # Возвращаем True, если текущий день - суббота (5) или воскресенье (6), иначе - False.
-    return today == 5 or today == 6
+    # Возвращаем True, если текущий день - суббота (5) или воскресенье (6) или праздник, иначе - False.
+    return today == 5 or today == 6 or is_holiday
 
 
 def find_near_time(list_time):
@@ -43,28 +52,38 @@ def find_near_time(list_time):
     return list_time[0]
 
 
+# Функция для конвертации времени в секунды
 def convert_to_second(time):
     return time.hour * 3600 + time.minute * 60 + time.second
 
 
+# Основная функция для выполнения задачи
 def run():
+    # Получаем текущее время
     time_now = datetime.datetime.now()
 
+    # Выбираем список времени открытия и закрытия бара в зависимости от того, является ли сегодня выходным
     list_times_open_bar_work = list_times_open_bar_source_weekend if is_weekend() else list_times_open_bar_source
     list_times_close_bar_work = list_times_close_bar_source_weekend if is_weekend() else list_times_close_bar_source
 
+    # Преобразуем строки с временем открытия бара в объекты datetime
     list_times_open_bar = [datetime.datetime(year=time_now.year, month=time_now.month, day=time_now.day,
                                              hour=int(item.split(':')[0]), minute=int(item.split(':')[1]))
                            for item in list_times_open_bar_work]
 
+    # Преобразуем строки с временем закрытия бара в объекты datetime
     list_times_close_bar = [datetime.datetime(year=time_now.year, month=time_now.month, day=time_now.day,
                                               hour=int(item.split(':')[0]), minute=int(item.split(':')[1]))
                             for item in list_times_close_bar_work]
 
+    # Вычисляем разницу между текущим временем и ближайшим временем закрытия бара
     delta_close_bar = convert_to_second(find_near_time(list_times_close_bar)) - convert_to_second(time_now)
+    # Вычисляем разницу между текущим временем и ближайшим временем открытия бара
     delta_open_bar = convert_to_second(find_near_time(list_times_open_bar)) - convert_to_second(time_now)
 
+    # Если время до закрытия бара больше, чем время до открытия бара, бар закрыт
     if delta_close_bar > delta_open_bar:
-        return f"Закрыто еще {str(datetime.timedelta(seconds=delta_open_bar))}", "static/resources/close.png"
+        return f"Закрыто ещё {str(datetime.timedelta(seconds=delta_open_bar))}", "static/resources/close.png"
+    # Если время до закрытия бара меньше, чем время до открытия бара, бар открыт
     elif delta_close_bar < delta_open_bar:
-        return f"Открыто еще {str(datetime.timedelta(seconds=delta_close_bar))}", "static/resources/open.png"
+        return f"Открыто ещё {str(datetime.timedelta(seconds=delta_close_bar))}", "static/resources/open.png"
